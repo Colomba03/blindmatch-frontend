@@ -11,6 +11,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExploreIcon from '@mui/icons-material/Explore';
+import JoinInnerIcon from '@mui/icons-material/JoinInner';
+import Diversity2Icon from '@mui/icons-material/Diversity2';
+import SettingsIcon from '@mui/icons-material/Settings';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MenuIcon from '@mui/icons-material/Menu';
 // import styles from "../login.module.css";
 
 export default function HomePage() {
@@ -23,21 +30,44 @@ export default function HomePage() {
       alignItems: "center",
       height: "50pc"
     },
+    bar: {
+        display:"flex",
+        flexDirection:"row",
+        alignItems:"flex-start",
+        borderBottom:"solid",
+        borderColor:"#6F0778",
+        width:"100%",
+        height:55,
+        backgroundColor: "#EDAAF3"
+    }
   };
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: 250 }}
       role="presentation"
       onClick={()=>setOpen(true)}
       onKeyDown={()=>setOpen(true)}
     >
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['Profile', 'Blind', 'Match','Community', 'Settings'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                <MailIcon />
+                {text == 'Profile' ? (<AccountCircleIcon />)
+                :(
+                <>
+                    {text == 'Blind' ? (<ExploreIcon />):(
+                    <>
+                        {text == 'Match' ? (<JoinInnerIcon />):(
+                            <>
+                                {text == 'Community' ? (<Diversity2Icon />):(<SettingsIcon />)}
+                            </>
+                        )}
+                    </>
+                    )}
+                </>
+                )}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -50,19 +80,23 @@ export default function HomePage() {
   const [open,setOpen] = useState(false);
   // const router = useRouter();
   return (
-    <div style={styles.container}>
-      <h2 style={{ color: "black", marginTop:150 }}>Log In</h2>
-      <Button onClick={()=>setOpen(true)}>Menu</Button>
-      <Drawer
-        anchor={'left'}
-        open={open}
-        onClose={()=>setOpen(false)}
-      >
-        {list('left')}
-      </Drawer>
-      <Link href="/profile/signup" underline="always">
-        Dont have an account? Sign Up
-      </Link>
-    </div>
+    <>
+        <div style={styles.bar}>
+        <MenuIcon style={{fontSize:"50px"}} onClick={()=>setOpen(true)} />
+        <Drawer
+            anchor={'left'}
+            open={open}
+            onClose={()=>setOpen(false)}
+        >
+            {list('left')}
+        </Drawer>
+        </div>
+        <div style={styles.container}>
+        <h2 style={{ color: "black", marginTop:150 }}>Log In</h2>
+        <Link href="/profile/signup" underline="always">
+            Dont have an account? Sign Up
+        </Link>
+        </div>
+    </>
   );
 }
