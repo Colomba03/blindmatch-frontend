@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/node": "^20.12.7",
     "@types/react": "18.2.79",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
