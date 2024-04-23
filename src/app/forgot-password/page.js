@@ -20,8 +20,8 @@ export default function ForgotPasswordPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  const dynamicWidth = Math.min(windowWidth * 0.5, 400) * 1.5;
-  const dynamicHeight = Math.min(windowHeight * 0.5, 300) * 1.5; // Height adjusted for the "Forgot Password" form
+  const dynamicWidth = Math.min(windowWidth * 0.5, 400) ;
+  const dynamicHeight = Math.min(windowHeight * 0.5, 300); 
 
   const styles = {
     container: {
@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       width: `${dynamicWidth}px`, // Dynamic width
       height: `${dynamicHeight}px`, // Dynamic height
-      boxSizing: 'border-box', // Make sure padding does not affect size
+      boxSizing: 'border-box', 
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -51,11 +51,11 @@ export default function ForgotPasswordPage() {
       color: '#0a7bab',
     },
     textField: {
-      margin: '10px 0',
+      margin: '5px 0',
       width: '100%',
     },
     button: {
-      marginTop: '20px',
+      marginTop: '10px',
       backgroundColor: '#8a9499',
       color: 'white',
       padding: '10px 0',
@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
     <div style={styles.container}>
       <Paper elevation={3} style={styles.paper}>
         <form onSubmit={handleSubmit}>
-          <h2 style={styles.title}>Forgot your Password?</h2>
+          <h2 style={styles.title}>Forgot Your Password?</h2>
           <TextField
             style={styles.textField}
             label="E-mail"

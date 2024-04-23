@@ -3,7 +3,8 @@
 import { Height } from "@mui/icons-material";
 import { Checkbox, FormControlLabel, Link, TextField, Button } from "@mui/material";
 import { useEffect, useState } from 'react';
-
+import Image from 'next/image';
+import logoImg from '../assests/logo.png';
 
 export default function ProfilePage() {
   const [email, setEmail] = useState("");
@@ -24,8 +25,8 @@ export default function ProfilePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  const dynamicWidth = Math.min(windowWidth * 0.5, 400)*1.5;
-  const dynamicHeight = Math.min(windowHeight * 0.5, 500)*1.5;
+  const dynamicWidth = Math.min(windowWidth * 0.5, 400);
+  const dynamicHeight = Math.max(windowHeight, 500);
 
   const styles = {
     container: {
@@ -34,12 +35,13 @@ export default function ProfilePage() {
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: '100vh',
-      padding: '20px',
+      padding: '5px',
       backgroundColor: '#d0e9f4', 
+      overflow: 'auto'
     },
     formContainer: {
       backgroundColor: 'white', 
-      padding: '20px',
+      padding: '5px',
       borderRadius: '8px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       width: `${dynamicWidth}px`, 
@@ -49,31 +51,30 @@ export default function ProfilePage() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center', 
+      justifyContent: 'space-between',
+      
     },
-    title: {
-      marginBottom: '20px',
-      textAlign: 'center',
-      fontWeight: 'bold',
-      fontFamily: 'Arial, sans-serif', 
-      fontSize: '50px', 
-      color: '#0a7bab', 
+    imageTitle: {
+      width: 'auto',
+      height: 'auto' 
     },
     textField: {
-      margin: '30px 0',
+      margin: '4px',
       width: '100%', 
+      boxSizing: 'border-box'
     },
     button: {
-      marginTop: '90px',
+      marginTop: '5px',
       backgroundColor: '#8a9499', 
       color: 'white', 
       padding: '10px 0', 
       borderRadius: '5px', 
       textTransform: 'none', 
       fontWeight: 'bold',
-      fontSize: '20px' 
+      fontSize: '15px' 
     },
     link: {
-      marginTop: '20px',
+      marginTop: '5px',
       textAlign: 'center',
       color: '#1877f2', 
     },
@@ -92,7 +93,7 @@ export default function ProfilePage() {
     forgotLink: {
       color: 'rgba(0, 0, 0, 0.9)',
       alignSelf: 'flex-start', 
-      paddingTop: '18px', 
+      paddingTop: '5px', 
       fontSize: '0.9rem',
  
     }
@@ -101,7 +102,7 @@ export default function ProfilePage() {
   return (
     <div style={styles.container}>
       <div style={styles.formContainer}>
-        <h2 style={styles.title}>Blind Match</h2>
+      <Image src={logoImg} alt="Blind Match Logo" style={styles.imageTitle} />
         <TextField
           style={styles.textField}
           label="E-mail"
