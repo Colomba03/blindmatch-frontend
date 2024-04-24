@@ -25,8 +25,7 @@ export default function ProfilePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  const dynamicWidth = Math.min(windowWidth * 0.5, 400);
-  const dynamicHeight = Math.max(windowHeight, 500);
+  const dynamicWidth = windowWidth*0.75
 
   const styles = {
     container: {
@@ -41,11 +40,11 @@ export default function ProfilePage() {
     },
     formContainer: {
       backgroundColor: 'white', 
-      padding: '5px',
+      padding: '25px',
       borderRadius: '8px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       width: `${dynamicWidth}px`, 
-      height: `${dynamicHeight}px`,
+      height: `85%`,
       boxSizing: 'border-box',
       margin: 'auto',
       display: 'flex',
@@ -61,7 +60,8 @@ export default function ProfilePage() {
     textField: {
       margin: '4px',
       width: '100%', 
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      borderRadius: '5px', 
     },
     button: {
       marginTop: '5px',
@@ -134,7 +134,7 @@ export default function ProfilePage() {
           </Link>
         </div>
         <Button style={styles.button} variant="contained" fullWidth>
-          Sign In
+          Log In
         </Button>
         <Link href="/profile/signup" style={styles.link} underline="always">
           Don't Have an Account? Sign Up
