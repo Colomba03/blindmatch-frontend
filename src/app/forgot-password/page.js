@@ -20,8 +20,7 @@ export default function ForgotPasswordPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  const dynamicWidth = Math.min(windowWidth * 0.5, 400) ;
-  const dynamicHeight = Math.min(windowHeight * 0.5, 300); 
+  const dynamicWidth = Math.min(windowWidth * 0.8, 400);
 
   const styles = {
     container: {
@@ -36,8 +35,8 @@ export default function ForgotPasswordPage() {
       padding: '40px',
       borderRadius: '8px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      width: `${dynamicWidth}px`, // Dynamic width
-      height: `${dynamicHeight}px`, // Dynamic height
+      width: `${dynamicWidth}px`, 
+      height: `95%`, 
       boxSizing: 'border-box', 
       display: 'flex',
       flexDirection: 'column',
@@ -75,7 +74,7 @@ export default function ForgotPasswordPage() {
     <div style={styles.container}>
       <Paper elevation={3} style={styles.paper}>
         <form onSubmit={handleSubmit}>
-          <h2 style={styles.title}>Forgot Your Password?</h2>
+          <h2 style={styles.title}>Reset your password</h2>
           <TextField
             style={styles.textField}
             label="E-mail"
