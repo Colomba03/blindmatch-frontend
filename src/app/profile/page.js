@@ -137,7 +137,7 @@ export default function ProfilePage() {
           Log In
         </Button>
         <Link href="/profile/signup" style={styles.link} underline="always">
-          Don't Have an Account? Sign Up
+          New to BlindMatch? Sign Up
         </Link>
       </div>
     </div>
