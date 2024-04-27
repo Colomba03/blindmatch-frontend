@@ -5,13 +5,34 @@ import { Checkbox, FormControlLabel, Link, TextField, Button } from "@mui/materi
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import logoImg from '../assests/logo.png';
+import { useRouter } from "next/navigation";
+import { setCookie } from "cookies-next";
 
 export default function ProfilePage() {
-  const [email, setEmail] = useState("");
+  
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
-  const [windowHeight, setWindowHeight] = useState(0)
+  const [windowHeight, setWindowHeight] = useState(0);
+  const router = useRouter();
+
+  async function login(){
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/login`, {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+      headers: { "Content-Type": "application/json" },
+    }).then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      setCookie("user_id",data);
+      router.push("../../feed/");
+    });
+  }
 
   useEffect(() => {
     function handleResize() {
@@ -107,8 +128,8 @@ export default function ProfilePage() {
           style={styles.textField}
           label="E-mail"
           variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
           style={styles.textField}
@@ -133,7 +154,7 @@ export default function ProfilePage() {
             Forgot Password?
           </Link>
         </div>
-        <Button style={styles.button} variant="contained" fullWidth>
+        <Button style={styles.button} variant="contained" fullWidth onClick={() => login()}>
           Log In
         </Button>
         <Link href="/profile/signup" style={styles.link} underline="always">

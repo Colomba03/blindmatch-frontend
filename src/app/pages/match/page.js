@@ -3,8 +3,8 @@ import { Button, Drawer, Link, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from 'next/image';
-import logoImg from '../assests/logo.png';
-import {NavBar} from "../../../components/navbar.js";
+import logoImg from '../../assests/logo.png';
+// import {NavBar} from "../../../components/navbar.js";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -22,7 +22,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuIcon from '@mui/icons-material/Menu';
 // import styles from "../login.module.css";
 
-export default function HomePage() {
+export default function MatchPage() {
   // console.log(styles);
   const styles = {
     container: {
@@ -56,15 +56,14 @@ export default function HomePage() {
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {text == 'Profile' ? (<AccountCircleIcon onClick={() => router.push('../pages/profile')}/>)
+                {text == 'Profile' ? (<AccountCircleIcon onClick={() => router.push()}/>)
                 :(
                 <>
-                    {text == 'Blind' ? (<ExploreIcon onClick={() => router.push('../pages/blind')}/>):(
+                    {text == 'Blind' ? (<ExploreIcon />):(
                     <>
-                        {text == 'Match' ? (<JoinInnerIcon onClick={() => router.push('../pages/match')}/>):(
+                        {text == 'Match' ? (<JoinInnerIcon />):(
                             <>
-                                {text == 'Community' ? (<Diversity2Icon onClick={() => router.push('../pages/community')}/>)
-                                :(<SettingsIcon onClick={() => router.push('../pages/profile')}/>)}
+                                {text == 'Community' ? (<Diversity2Icon />):(<SettingsIcon />)}
                             </>
                         )}
                     </>
@@ -72,23 +71,7 @@ export default function HomePage() {
                 </>
                 )}
               </ListItemIcon>
-              <ListItemText primary={text}
-                onClick={text == 'Profile' ? (() => router.push('../pages/profile'))
-                :(
-                <>
-                    {text == 'Blind' ? (() => router.push('../pages/blind')):(
-                    <>
-                        {text == 'Match' ? (() => router.push('../pages/match')):(
-                            <>
-                                {text == 'Community' ? (() => router.push('../pages/community'))
-                                :(() => router.push('../pages/profile'))}
-                            </>
-                        )}
-                    </>
-                    )}
-                </>
-                )}
-              />
+              <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -102,7 +85,6 @@ export default function HomePage() {
     <>
         <div style={styles.bar}>
         <MenuIcon style={{fontSize:"50px"}} onClick={()=>setOpen(true)} />
-        {/* <Image src={logoImg} alt="Blind Match Logo" style={styles.imageTitle} /> */}
         <Drawer
             anchor={'left'}
             open={open}
@@ -112,10 +94,7 @@ export default function HomePage() {
         </Drawer>
         </div>
         <div style={styles.container}>
-        <h2 style={{ color: "black", marginTop:150 }}>Log In</h2>
-        <Link href="/profile/signup" underline="always">
-            Dont have an account? Sign Up
-        </Link>
+        <h2 style={{ color: "black", marginTop:150 }}>Match Page</h2>
         </div>
     </>
   );
