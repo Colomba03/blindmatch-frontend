@@ -17,22 +17,38 @@ export default function ProfilePage() {
   const [windowHeight, setWindowHeight] = useState(0);
   const router = useRouter();
 
-  async function login(){
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/login`, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-      headers: { "Content-Type": "application/json" },
-    }).then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      setCookie("user_id",data);
-      router.push("../../feed/");
-    });
-  }
+  async function login() {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/auth/login`, {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            }),
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+            if (response.status === 404) {
+                // Handle 404 specifically if needed
+                console.error('Login failed');
+            } else {
+                // Handle other statuses
+                console.error('Login failed');
+            }
+            return; // Prevent further processing if an error occurred
+        }
+
+        const data = await response.json(); // Process response if no errors
+        console.log(data);
+        setCookie("user_id", data);
+        router.push("../../feed/"); // Navigate to feed page
+
+    } catch (error) {
+        console.error('Error during login:', error);
+    }
+}
 
   useEffect(() => {
     function handleResize() {

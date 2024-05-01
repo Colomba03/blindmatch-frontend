@@ -41,56 +41,44 @@ export default function HomePage() {
     }
   };
 
-  const list = (anchor) => (
+  const navigateToPage = (page) => {
+    const routes = {
+      'Profile': '../pages/profile',
+      'Blind': '../pages/blind',
+      'Match': '../pages/match',
+      'Community': '../pages/community',
+      'Settings': '../pages/settings' 
+    };
+    return () => router.push(routes[page]);
+  };
+  
+  const list = () => (
     <Box
       sx={{ width: 250 }}
       role="presentation"
-      onClick={()=>setOpen(true)}
-      onKeyDown={()=>setOpen(true)}
+      onClick={() => setOpen(false)}
+      onKeyDown={() => setOpen(false)}
     >
       <List>
-        {['Profile','Community', 'Settings'].map((text, index) => (
+        {['Profile', 'Blind', 'Match', 'Community', 'Settings'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={navigateToPage(text)}>
               <ListItemIcon>
-                {text == 'Profile' ? (<AccountCircleIcon onClick={() => router.push('../pages/profile')}/>)
-                :(
-                <>
-                    {text == 'Blind' ? (<ExploreIcon onClick={() => router.push('../pages/blind')}/>):(
-                    <>
-                        {text == 'Match' ? (<JoinInnerIcon onClick={() => router.push('../pages/match')}/>):(
-                            <>
-                                {text == 'Community' ? (<Diversity2Icon onClick={() => router.push('../pages/community')}/>)
-                                :(<SettingsIcon onClick={() => router.push('../pages/profile')}/>)}
-                            </>
-                        )}
-                    </>
-                    )}
-                </>
-                )}
+                {
+                  {
+                    'Profile': <AccountCircleIcon />,
+                    'Blind': <ExploreIcon />,
+                    'Match': <JoinInnerIcon />,
+                    'Community': <Diversity2Icon />,
+                    'Settings': <SettingsIcon />
+                  }[text]
+                }
               </ListItemIcon>
-              <ListItemText primary={text}
-                onClick={text == 'Profile' ? (() => router.push('../pages/profile'))
-                :(
-                <>
-                    {text == 'Blind' ? (() => router.push('../pages/blind')):(
-                    <>
-                        {text == 'Match' ? (() => router.push('../pages/match')):(
-                            <>
-                                {text == 'Community' ? (() => router.push('../pages/community'))
-                                :(() => router.push('../pages/profile'))}
-                            </>
-                        )}
-                    </>
-                    )}
-                </>
-                )}
-              />
+              <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      
     </Box>
   );
 
