@@ -126,7 +126,7 @@ export default function ProfilePage() {
       <Image src={logoImg} alt="Blind Match Logo" style={styles.imageTitle} />
         <TextField
           style={styles.textField}
-          label="E-mail"
+          label="Username"
           variant="outlined"
           value={username}
           onChange={(e) => setUsername(e.target.value)}

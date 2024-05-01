@@ -1,29 +1,26 @@
 "use client";
-import { Button, Drawer, Link, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from 'next/image';
-import logoImg from '../assests/logo.png';
-import {NavBar} from "../../../components/navbar.js";
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
+import { useRouter } from "next/navigation";
+import {Button,Drawer,TextField,Card,CardContent,Typography,Accordion,AccordionSummary,AccordionDetails,Box,IconButton,List,ListItem,ListItemButton,ListItemIcon,ListItemText} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExploreIcon from '@mui/icons-material/Explore';
 import JoinInnerIcon from '@mui/icons-material/JoinInner';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 import SettingsIcon from '@mui/icons-material/Settings';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import MenuIcon from '@mui/icons-material/Menu';
-// import styles from "../login.module.css";
+import logoImg from '../assests/logo.png';
+import { getCookie } from 'cookies-next';
 
 export default function HomePage() {
-  // console.log(styles);
+
+  const [open, setOpen] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [expanded, setExpanded] = useState(false);
+  const router = useRouter();
   const styles = {
     container: {
       display: "flex",
@@ -52,7 +49,7 @@ export default function HomePage() {
       onKeyDown={()=>setOpen(true)}
     >
       <List>
-        {['Profile', 'Blind', 'Match','Community', 'Settings'].map((text, index) => (
+        {['Profile','Community', 'Settings'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -96,27 +93,101 @@ export default function HomePage() {
       
     </Box>
   );
-  const [open,setOpen] = useState(false);
-  const router = useRouter();
+
+  useEffect(() => {
+    const userId = getCookie('user_id');
+    if (userId) {
+      const fetchPosts = () => {
+        fetch(`https://blindmatch-c7791e88ce1f.herokuapp.com/posts/relatedPosts/${userId}`)
+          .then(response => {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              return response.json();
+            } else {
+              return response.text();
+            }
+          })
+          .then(data => {
+            if (typeof data === 'string' && data.includes("No related posts found")) {
+              setPosts([]);
+            } else if (data && Array.isArray(data)) {
+              setPosts(data);
+            } else {
+              setPosts([]); 
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching posts:', error.message);
+            setPosts([]); 
+          });
+      };
+      fetchPosts();
+    }
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const userId = getCookie('user_id');
+    const newPost = { userId, title, content };
+
+    try {
+      await fetch('https://blindmatch-c7791e88ce1f.herokuapp.com/posts', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newPost)
+      });
+    } catch (error) {
+      console.error('Error posting new data:', error);
+    }
+  }
   return (
     <>
-        <div style={styles.bar}>
-        <MenuIcon style={{fontSize:"50px"}} onClick={()=>setOpen(true)} />
-        {/* <Image src={logoImg} alt="Blind Match Logo" style={styles.imageTitle} /> */}
-        <Drawer
-            anchor={'left'}
-            open={open}
-            onClose={()=>setOpen(false)}
-        >
-            {list('left')}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottom: 'solid 1px #6F0778',
+        backgroundColor: '#d0e9f4',
+        height: '65px'
+      }}>
+        <IconButton onClick={() => setOpen(true)} style={{ position: 'absolute', left: 10 }}>
+          <MenuIcon style={{ fontSize: '50px' }} />
+        </IconButton>
+        <Image src={logoImg} alt="Logo" width={110} height={45} objectFit="contain" />
+        <Drawer anchor='left' open={open} onClose={() => setOpen(false)}>
+          {list()}
         </Drawer>
-        </div>
-        <div style={styles.container}>
-        <h2 style={{ color: "black", marginTop:150 }}>Log In</h2>
-        <Link href="/profile/signup" underline="always">
-            Dont have an account? Sign Up
-        </Link>
-        </div>
+      </div>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 2, width: '100%', bgcolor: '#d0e9f4', minHeight: '100vh' }}>
+        <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)} sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper' }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+            <Typography>Create A New Post</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+              <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} variant="outlined" fullWidth margin="normal" />
+              <TextField label="Content" value={content} onChange={(e) => setContent(e.target.value)} multiline rows={4} variant="outlined" fullWidth margin="normal" />
+              <Button type="submit" variant="contained" color="primary" sx={{ mt: 2, backgroundColor: 'lightgrey', color: 'black', '&:hover': { backgroundColor: 'grey' }}}>Submit</Button>
+            </form>
+          </AccordionDetails>
+        </Accordion>
+        <List sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          {posts.length > 0 ? (
+            posts.map(post => (
+              <ListItem key={post.id} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <Card sx={{ width: '100%', maxWidth: 600 }}>
+                  <CardContent>
+                    <Typography variant="h5">{post.title}</Typography>
+                    <Typography variant="body2">{post.content}</Typography>
+                  </CardContent>
+                </Card>
+              </ListItem>
+            ))
+          ) : (
+            <Typography sx={{ mt: 2 }}>No related posts found</Typography>
+          )}
+        </List>
+      </Box>
     </>
   );
 }
