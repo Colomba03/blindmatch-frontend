@@ -49,36 +49,41 @@ export default function HomePage() {
     }
   };
 
-  const list = (anchor) => (
+  const navigateToPage = (page) => {
+    const routes = {
+      'Profile': '../pages/profile',
+      'Blind': '../pages/blind',
+      'Match': '../pages/match',
+      'Community': '../pages/community',
+      'Settings': '../pages/settings' 
+    };
+    return () => router.push(routes[page]);
+  };
+  
+  const list = () => (
     <Box
       sx={{ width: 250 }}
       role="presentation"
-      onClick={()=>setOpen(true)}
-      onKeyDown={()=>setOpen(true)}
+      onClick={() => setOpen(false)}
+      onKeyDown={() => setOpen(false)}
     >
       <List>
         {['Profile','Blind', 'Log Out'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={navigateToPage(text)}>
               <ListItemIcon>
-                {text == 'Profile' ? (<AccountCircleIcon onClick={() => router.push('../pages/profile')}/>)
-                :(
-                <>
-                    {text == 'Blind' ? (<ExploreIcon onClick={() => router.push('../pages/blind')}/>):(
-                    <>
-                        {text == 'Match' ? (<JoinInnerIcon onClick={() => router.push('../pages/match')}/>):(
-                            <>
-                                {text == 'Community' ? (<Diversity2Icon onClick={() => router.push('../pages/community')}/>)
-                                :(<LogoutIcon onClick={() => {
-                                  deleteCookie('user_id');
-                                  router.push('../profile');
-                                }}/>)}
-                            </>
-                        )}
-                    </>
-                    )}
-                </>
-                )}
+                {
+                  {
+                    'Profile': <AccountCircleIcon />,
+                    'Blind': <ExploreIcon />,
+                    'Match': <JoinInnerIcon />,
+                    'Community': <Diversity2Icon />,
+                    'Log Out': <LogoutIcon onClick={() => {
+                                    deleteCookie('user_id');
+                                    router.push('../profile');
+                                }}/>
+                  }[text]
+                }
               </ListItemIcon>
               <ListItemText primary={text}
                 onClick={text == 'Profile' ? (() => router.push('../pages/profile'))
@@ -99,7 +104,6 @@ export default function HomePage() {
           </ListItem>
         ))}
       </List>
-      
     </Box>
   );
 
