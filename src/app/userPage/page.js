@@ -8,7 +8,8 @@ import logoImg from '../assests/logo.png';
 import { NavBar } from '../../../components/navbar';
 import { ListItemButton, ListItemIcon } from '@mui/material';
 import { Mail as MailIcon, AccountCircle as AccountCircleIcon, Explore as ExploreIcon, JoinInner as JoinInnerIcon, Diversity2 as Diversity2Icon, Settings as SettingsIcon, MoreVert as MoreVertIcon, Menu as MenuIcon } from '@mui/icons-material';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
+import { getCookie } from 'cookies-next';
 
 
 function getUserIdFromCookie() {
@@ -17,7 +18,7 @@ function getUserIdFromCookie() {
 
 async function fetchUserData(userId) {
   try {
-    const response = await fetch(`https://blindmatch-c7791e88ce1f.herokuapp.com/users/${userId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/users/${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -27,6 +28,7 @@ async function fetchUserData(userId) {
       throw new Error('Failed to fetch user data');
     }
     const userData = await response.json();
+    console.log(userData);
     return userData;
   } catch (error) {
     console.error('Error fetching user data:', error);
@@ -114,7 +116,7 @@ export default function UserPage() {
   };*/
 
   useEffect(() => {
-    const userId = getUserIdFromCookie();
+    const userId = getCookie('user_id');
     if (userId) {
       fetchUserData(userId)
         .then(userData => {
