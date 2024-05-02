@@ -75,7 +75,18 @@ export default function ProfilePage() {
                 </>
                 )}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text}
+                onClick={text == 'Profile' ? (() => router.push('../pages/profile'))
+                :(
+                    text == 'Blind' ? (() => router.push('../pages/blind')):(
+                    text == 'Match' ? (() => router.push('../feed')):(
+                            text == 'Community' ? (() => router.push('../pages/community'))
+                                :(() => router.push('../feed'))
+                        )
+                    )
+                
+                )} 
+              />
             </ListItemButton>
           </ListItem>
         ))}
